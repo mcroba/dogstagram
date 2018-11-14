@@ -11,7 +11,7 @@ edit `.env` file and set your (wifi) ip address for `REACT_NATIVE_PACKAGER_HOSTN
 create the docker container with \
 `docker-compose up -d`
 
-connect to the container
+connect to the container \
 `docker exec -it react-native-workshop bash`
 
 ## Expo
@@ -182,4 +182,7 @@ const styles = StyleSheet.create({
 - Fetch data from an api and use FlatList to display the result (optional use a ActivityIndicator)
 
 ## Step 4: Navigation
-- install react-navigation (yarn add react-navigation)
+- Create a navigation with react-navigation (install: `npm i react-navigation`)
+- Create component Feed (for the list of dogs) and Detail (for the detail of a dog)
+- Get parameters from navigation
+- Add a small animation
