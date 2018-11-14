@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
 import Avatar from "./Avatar";
-import { hidden } from 'ansi-colors';
 
 export default class App extends React.Component {
   state = {
@@ -25,7 +24,7 @@ export default class App extends React.Component {
   renderContent = () => {
     return (this.state.isLoading) ?
       <ActivityIndicator style={styles.loading} size="large" /> :
-      <FlatList 
+      <FlatList
         data={this.state.images} 
         keyExtractor={(item, index) => index}
         contentContainerStyle={styles.list}
@@ -34,7 +33,7 @@ export default class App extends React.Component {
         numColumns={3}
       />
   }
-  
+
   render() {
     return (
       <View style={styles.container}>

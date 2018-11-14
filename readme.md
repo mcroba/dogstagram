@@ -179,10 +179,255 @@ const styles = StyleSheet.create({
 
 ## Step 3: Fetch from API
 - Add a Title
-- Fetch data from an api and use FlatList to display the result (optional use a ActivityIndicator)
+- Fetch data from an api (https://dog.ceo/api/breeds/image/random/50) 
+- ActivityIndicator when loading
+- Use FlatList to display the result
+
+FOR US:
+- fetching without Flatlist and minimal Avatar using dog image
+App.js
+```
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Avatar from "./Avatar";
+
+export default class App extends React.Component {
+  state = {}
+
+  componentDidMount() {
+    this.fetchImages();
+  }
+
+  fetchImages = async () => {
+    const response = await fetch("https://dog.ceo/api/breeds/image/random/50");
+    const { message: images } = await response.json();
+    
+    this.setState({
+      images
+    })
+  }
+
+  renderContent = () => {
+    return (this.state.images) ? this.state.images.map((image, index) => {
+      return (<Avatar key={index} imageUrl={image} />);
+    }): null;
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Dogstagram</Text>
+        {this.renderContent()}
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingTop: 40,
+    paddingBottom: 8,
+  },
+  text: {
+    color: "#000",
+    fontSize: 48,
+  },
+});
+```
+
+Avatar.js
+```
+return (
+    <TouchableOpacity onPress={onPress} style={styles.avatar}>
+        <Image source={{uri: imageUrl}} style={styles.image} />
+    </TouchableOpacity>
+)
+```
+
+- ActivityIndicator
+```
+import React from 'react';
+import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
+import Avatar from "./Avatar";
+
+export default class App extends React.Component {
+  state = {
+    isLoading: true
+  }
+
+  componentDidMount() {
+    this.fetchImages();
+  }
+
+  fetchImages = async () => {
+    const response = await fetch("https://dog.ceo/api/breeds/image/random/50");
+    const { message: images } = await response.json();
+    
+    /*this.setState({
+      images,
+      isLoading: false
+    })*/
+  }
+
+  renderContent = () => {
+    return (this.state.isLoading) ?
+      <ActivityIndicator style={styles.loading} size="large" /> :
+      null
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Dogstagram</Text>
+        {this.renderContent()}
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingTop: 40,
+    paddingBottom: 8,
+  },
+  loading: {
+    flex: 1
+  },
+});
+```
 
 ## Step 4: Navigation
 - Create a navigation with react-navigation (install: `npm i react-navigation`)
 - Create component Feed (for the list of dogs) and Detail (for the detail of a dog)
 - Get parameters from navigation
 - Add a small animation
+
+FOR US:
+App.js
+```
+import {createStackNavigator} from "react-navigation";
+import Feed from "./Feed";
+import Detail from "./Detail";
+
+export default createStackNavigator ({
+  Home: {
+    screen: Feed,
+    navigationOptions: {
+      title: "Dogstagram"
+    }
+  },
+  Detail: {
+    screen: Detail,
+    navigationOptions: {
+      title: "Detail"
+    }
+  }
+});
+```
+
+Feed.js:
+copy/paste from App, then rename class name App => Feed
+remove title (and style)
+container marginTop: -2
+
+Details.js
+```
+import React from "react";
+import {View, Text} from "react-native"
+
+export default class Detail extends React.Component {
+    render() {
+        return (
+            <View>
+                <Text>detail</Text>
+            </View>
+        )
+    }
+}
+```
+
+- Get parameter (step 1)
+
+Feed
+```
+handleAvatarPress = (item) => {
+  this.props.navigation.push("Detail", {item});
+}
+
+...  
+
+renderItem={({item}) => <Avatar imageUrl={item} onPress={this.handleAvatarPress.bind(this, item)} />}
+```
+
+Detail
+```
+render() {
+    const {item} = this.props.navigation.state.params;
+    return (
+        <View>
+            <Text>{item}</Text>
+        </View>
+    )
+}
+```
+
+- Add increment on click with TouchableWithoutFeedback
+
+Detail.js
+```
+import React from "react";
+import {View, Image, Text, StyleSheet, Dimensions, TouchableWithoutFeedback} from "react-native"
+
+export default class Detail extends React.Component {
+    state = {
+        // simulate a value retrieve from the API
+        likes: Math.floor(Math.random() * 100)
+    }
+
+    onItemLike = () => {
+        this.setState(prevState => {
+            return { likes: prevState.likes + 1 }
+        });
+    }
+
+    render() {
+        const {item} = this.props.navigation.state.params;
+        return (
+            <View>
+                <TouchableWithoutFeedback onPress={this.onItemLike}>
+                    <Image source={{uri: item}} style={styles.image}/>
+                </TouchableWithoutFeedback>
+                <Text style={styles.text}>{`This dog has ${this.state.likes} likes`}</Text>
+            </View>
+        )
+    }
+}
+
+const width = Dimensions.get("window").width;
+const styles = StyleSheet.create({
+    image: {
+        height: width,
+        width: width
+    },
+    text: {
+        alignSelf: "center",
+        padding: 5
+    }
+});
+```
