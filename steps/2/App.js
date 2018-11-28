@@ -1,23 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Avatar from "./Avatar";
+import Avatar from './Avatar';
 
 export default class App extends React.Component {
-  state = {
-    count: 0
-  }
-
-  handleAvatarPress = () => {
-    this.setState(prevState => ({
-      count: prevState.count + 1
-    }))
-  }
-  
   render() {
     return (
       <View style={styles.container}>
-        <Avatar avatarColor="tomato" onPress={this.handleAvatarPress} />
-        <Text style={styles.text}>{this.state.count}</Text>
+        <Avatar color="tomato" initials="SM" />
+        <Avatar color="lime" initials="SB" />
+        <Avatar color="teal" initials="NX" />
       </View>
     );
   }
@@ -29,9 +20,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  text: {
-    color: "#000",
-    fontSize: 48,
   },
 });
