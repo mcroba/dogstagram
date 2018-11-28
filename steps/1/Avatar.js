@@ -1,26 +1,26 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-const Avatar = ({avatarColor, initial}) => {
-    return (
-        <View style={[styles.avatar, {backgroundColor: avatarColor}]}>
-            <Text style={styles.initial}>{initial}</Text>
+export default class Avatar extends React.Component {
+  render() {
+    return (  
+        <View style={{...styles.avatar, backgroundColor: this.props.color}}>
+            <Text style={styles.initials}>{this.props.initials}</Text>
         </View>
     )
+  }
 }
 
 const styles = StyleSheet.create({
-    avatar: {
-        borderRadius: 100,
-        width: 200,
-        height: 200,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    initial: {
-        color: "#fff",
-        fontSize: 48
-    }
+  avatar: {
+    borderRadius: 100,
+    width: 200,
+    height: 200,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  initials: {
+      color: "#fff",
+      fontSize: 48
+  }
 });
-
-export default Avatar;
