@@ -1,9 +1,9 @@
 import React from 'react';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Feed from "./Feed";
 import Detail from "./Detail";
 
-export default createStackNavigator ({
+const AppNavigator = createStackNavigator ({
   Home: {
     screen: Feed,
     navigationOptions: {
@@ -17,3 +17,5 @@ export default createStackNavigator ({
     }
   }
 });
+
+export default createAppContainer(AppNavigator);
