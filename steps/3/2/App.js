@@ -1,14 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import Avatar from './Avatar';
 
 export default class App extends React.Component {
-  state = {
-    isLoading: true
-  }
+  state = {}
 
   componentDidMount() {
-    this.fetchImages();
+    this.fetchImages()
   }
 
   fetchImages = async () => {
@@ -16,27 +14,24 @@ export default class App extends React.Component {
     const { message } = await response.json();
 
     this.setState({
-      images: message,
-      isLoading: false
+      images: message
     });
   }
 
   renderContent = () => {
-    return (this.state.isLoading) ?
-      <ActivityIndicator style={styles.loading} size="large" /> :
+    return (this.state.images) ?
       <FlatList 
         data={this.state.images} 
         keyExtractor={(item, index) => index}
-        contentContainerStyle={styles.list}
         renderItem={({item}) => <Avatar imageUrl={item} />}
         numColumns={3}
-      />
+      /> :
+      <Text>Loading...</Text>
   }
   
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Dogstagram</Text>
         {this.renderContent()}
       </View>
     );
@@ -50,13 +45,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    paddingTop: 40,
-    paddingBottom: 8,
-  },
-  list: {
-    marginLeft: -2
-  }
 });

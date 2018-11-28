@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 export default class Avatar extends React.Component {
   state = {
@@ -21,16 +21,16 @@ export default class Avatar extends React.Component {
   }
 }
 
-const padding = 2;
-const nbColumn = 3;
-const avatarSize = (Dimensions.get("window").width - ((nbColumn + 1) * padding)) / nbColumn;
-
 const styles = StyleSheet.create({
   avatar: {
-    padding
+    borderRadius: 100,
+    width: 200,
+    height: 200,
+    alignItems: "center",
+    justifyContent: "center",
   },
   image: {
-      height: avatarSize,
-      width: avatarSize
-  },
+    height: 200,
+    width: 200
+  }
 });
